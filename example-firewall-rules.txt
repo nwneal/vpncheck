@@ -1,0 +1,35 @@
+# drop all input/output packets
+sudo iptables -P INPUT DROP;
+sudo iptables -P OUTPUT DROP;
+
+# allow vpn
+sudo iptables -A INPUT -s <VPN IP ADDRESS> -j ACCEPT;
+sudo iptables -A OUTPUT -d <VPN IP ADDRESS> -j ACCEPT;
+
+# allow check server
+sudo iptables -A INPUT -p tcp -s <CHECK SERVER IP ADDRESS> --sport <CHECK SERVER PORT> -j ACCEPT;
+sudo iptables -A OUTPUT -p tcp -d <CHECK SERVER IP ADDRESS> --dport <CHECK SERVER PORT> -j ACCEPT;
+
+# (optional) allow google DNS
+sudo iptables -A INPUT -p udp -s 8.8.8.8 --sport 53 -j ACCEPT;
+sudo iptables -A OUTPUT -p udp -d 8.8.8.8 --dport 53 -j ACCEPT;
+sudo iptables -A INPUT -p udp -s 8.8.4.4 --sport 53 -j ACCEPT;
+sudo iptables -A OUTPUT -p udp -d 8.8.4.4 --dport 53 -j ACCEPT;
+
+# rest is for public wifi subnets
+sudo iptables -A INPUT -p tcp -s 10.0.0.1 -j ACCEPT;
+sudo iptables -A OUTPUT -p tcp -d 10.0.0.1 -j ACCEPT;
+sudo iptables -A INPUT -p udp -s 10.0.0.1 --sport 53 -j ACCEPT;
+sudo iptables -A OUTPUT -p udp -d 10.0.0.1 --dport 53 -j ACCEPT;
+
+sudo iptables -A INPUT -p tcp -s 192.168.0.1 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -d 192.168.0.1 -j ACCEPT
+sudo iptables -A INPUT -p udp -s 192.168.0.1 --sport 53 -j ACCEPT
+sudo iptables -A OUTPUT -p udp -d 192.168.0.1 --dport 53 -j ACCEPT
+
+sudo iptables -A INPUT -p tcp -s 192.168.1.1 -j ACCEPT
+sudo iptables -A OUTPUT -p tcp -d 192.168.1.1 -j ACCEPT
+sudo iptables -A INPUT -p udp -s 192.168.1.1 --sport 53 -j ACCEPT
+sudo iptables -A OUTPUT -p udp -d 192.168.1.1 --dport 53 -j ACCEPT
+
+
